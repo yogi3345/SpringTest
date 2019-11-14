@@ -22,7 +22,7 @@
   </div>
   
   <div class="container">
-  		<h2><a href="/modifyAccountDetails?userEmail=${pageContext.request.userPrincipal.name}">Modify Account Details</a></h2>
+  		<h2><a href="/${sessionScope.userId}/update">Modify Account Details</a></h2>
   		<p>${userModified}</p>
   		<c:if test="${user!=null}">
   			

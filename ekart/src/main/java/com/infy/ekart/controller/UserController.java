@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -68,15 +69,15 @@ public class UserController {
         return "login";
     }
     
-    @GetMapping("/modifyAccountDetails")
-    public ModelAndView modifyAccountDetails(ModelMap model, HttpSession httpSession) {
+    @GetMapping("/{userId}/update")
+    public ModelAndView modifyAccountDetails(@PathVariable long userId, ModelMap model, HttpSession httpSession) {
     	//System.out.println(userEmail + userService);
-    	UserDTO userDTO = userService.findById((Long)httpSession.getAttribute("userId")).toDTO();
+    	UserDTO userDTO = userService.findById(userId).toDTO();
     	model.addAttribute("user", userDTO);
         return new ModelAndView("welcome", "command", new UserDTO());
     }
     
-    @PostMapping("/modifyAccountDetails")
+    @PostMapping("/{userId}/update")
     public ModelAndView modifyAccountDetails(@ModelAttribute("command") UserDTO userDTO, ModelMap model,
     			HttpSession httpSession) {
     	User user = userService.findById((Long)httpSession.getAttribute("userId"));
