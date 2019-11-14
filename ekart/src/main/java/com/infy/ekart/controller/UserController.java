@@ -78,9 +78,9 @@ public class UserController {
     }
     
     @PostMapping("/{userId}/update")
-    public ModelAndView modifyAccountDetails(@ModelAttribute("command") UserDTO userDTO, ModelMap model,
+    public ModelAndView modifyAccountDetails(@PathVariable long userId, @ModelAttribute("command") UserDTO userDTO, ModelMap model,
     			HttpSession httpSession) {
-    	User user = userService.findById((Long)httpSession.getAttribute("userId"));
+    	User user = userService.findById(userId);
     	user.setName(userDTO.getName());
     	user.setPassword(userDTO.getPassword());
     	userService.save(user);
