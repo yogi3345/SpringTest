@@ -40,21 +40,27 @@ public class AddressController {
 
 	@Autowired
 	Environment environment;
+	
+	@GetMapping
+	public String viewAddress(@PathVariable long userId, ModelMap model) {
+		return "address";
+	}
 
 	@GetMapping("/add")
-	@ResponseBody
-	public ModelAndView addAddress(@PathVariable long userId, ModelMap model) {
+	public ModelAndView addAddressForm(@PathVariable long userId, ModelMap model) {
 		model.addAttribute("states", States.getAllStates());
-		return new ModelAndView("welcome", "addAddress", new AddressDTO());
+		return new ModelAndView("address", "addAddress", new AddressDTO());
 	}
 
 	@PostMapping("/add")
-	public ModelAndView updateAddress(@PathVariable long userId,
+	public ModelAndView addAddressSubmit(@PathVariable long userId,
 			@ModelAttribute("addAddress") @Valid AddressDTO addressDTO, BindingResult bindingResult, ModelMap model) {
-
+		
+		ModelAndView modelAndView = new ModelAndView("address");
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("states", States.getAllStates());
-			return new ModelAndView("welcome", "addAddress", addressDTO);
+			model.addAttribute("addAddress", addressDTO);
+			return modelAndView;
 		}
 
 		try {
@@ -70,7 +76,7 @@ public class AddressController {
 		} catch (Exception ex) {
 			model.addAttribute("error", ex.getMessage());
 		}
-		return new ModelAndView("welcome");
+		return modelAndView;
 	}
 
 }

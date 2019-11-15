@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Create an account</title>
+<title>Welcome to Ekart</title>
 <link href="${contextPath}/resources/css/bootstrap.min.css"
 	rel="stylesheet">
 <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
@@ -27,20 +27,12 @@
 		<h2>
 			<a href="/${sessionScope.userId}/update">Modify Account Details</a>
 		</h2>
-		<%-- <h2>
+		<h2>
 			<a href="/${sessionScope.userId}/address">Manage Addresses</a>
-		</h2> --%>
-		<h2>
-			<a href="/${sessionScope.userId}/address/add">Add Address</a>
-		</h2>
-		<h2>
-			<a href="/${sessionScope.userId}/address/update">Update Address</a>
 		</h2>
 		<p>${success}${error}</p>
 		<c:if test="${user!=null}"><jsp:include
-				page="modifyAccount.jsp" /></c:if>
-		<c:if test="${states!=null}"><jsp:include
-				page="addAddress.jsp" /></c:if>
+				page="Account/modifyAccount.jsp" /></c:if>
 	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

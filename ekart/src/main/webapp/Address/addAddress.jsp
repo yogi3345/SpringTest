@@ -54,7 +54,7 @@
 
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
 			<a class="btn btn-lg btn-primary btn-block"
-				href="${contextPath}/welcome">Cancel</a>
+				href="${contextPath}/${sessionScope.userId}/address">Cancel</a>
 		</form:form>
 
 	</div>
