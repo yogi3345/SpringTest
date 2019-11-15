@@ -1,10 +1,19 @@
 package com.infy.ekart.entity;
 
-import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.infy.ekart.dto.UserDTO;
-
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -20,8 +29,8 @@ public class User {
     @Column(unique=true)
     private String email;
 
-    /*@Transient
-    private String passwordConfirm;*/
+    @OneToMany(mappedBy="user")
+    private List<Address> addresses;
 
     @ManyToMany
     private Set<Role> roles;

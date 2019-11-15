@@ -1,4 +1,4 @@
-package com.infy.ekart.validator;
+package com.infy.ekart.utilities;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

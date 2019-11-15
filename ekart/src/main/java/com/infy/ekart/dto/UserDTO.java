@@ -16,7 +16,6 @@ public class UserDTO {
 	@NotNull(message="Password is mandatory")
     private String password;
 	
-	@NotEmpty(message="Please confirm the password")
     private String passwordConfirm;
     
 	@NotEmpty(message="Please enter the Email Id")
