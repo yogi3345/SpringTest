@@ -1,5 +1,8 @@
 package com.infy.ekart.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +11,7 @@ import com.infy.ekart.repository.AddressRepository;
 
 @Component
 public class AddressServiceImpl implements AddressService {
-	
+
 	@Autowired
 	AddressRepository addressRepository;
 
@@ -19,9 +22,16 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public Address findById(long id) {
+	public Address getById(long id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Address> getAddressesByUser(long userId) {
+		// TODO Auto-generated method stub
+		List<Address> addressEntityList = addressRepository.findByUserId(userId);
+		return addressEntityList;
 	}
 
 }

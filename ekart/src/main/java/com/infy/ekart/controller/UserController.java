@@ -39,9 +39,10 @@ public class UserController {
 	Environment environment;
 
 	@GetMapping("/registration")
-	public ModelAndView registration(ModelMap model) {
-
-		return new ModelAndView("registration", "command", new UserDTO());
+	public String registration(ModelMap model) {
+		
+		model.addAttribute("command", new UserDTO());
+		return "registration";
 	}
 
 	@PostMapping("/registration")
@@ -71,11 +72,10 @@ public class UserController {
 	}
 
 	@GetMapping("/{userId}/update")
-	public ModelAndView modifyAccountDetails(@PathVariable long userId, ModelMap model, HttpSession httpSession) {
-		// System.out.println(userEmail + userService);
-		ModelAndView modelAndView = new ModelAndView("welcome");
+	public String modifyAccountDetails(@PathVariable long userId, ModelMap model, HttpSession httpSession) {
+		
 		try {
-			User user = userService.findById(userId);
+			User user = userService.getById(userId);
 			if (user == null)
 				throw new UsernameNotFoundException(environment.getProperty("user.update.USERNOTFOUND"));
 			UserDTO userDTO = user.toDTO();
@@ -86,21 +86,21 @@ public class UserController {
 		} catch (Exception ex) {
 			model.addAttribute("error", ex.getMessage());
 		}
-		return modelAndView;
+		return "welcome";
 	}
 
 	@PostMapping("/{userId}/update")
-	public ModelAndView modifyAccountDetails(@PathVariable long userId,
+	public String modifyAccountDetails(@PathVariable long userId,
 			@Valid @ModelAttribute("command") UserDTO userDTO, BindingResult bindingResult, ModelMap model,
 			HttpSession httpSession) {
-		ModelAndView modelAndView = new ModelAndView("welcome");
+		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("user", userDTO);
 			model.addAttribute("command", userDTO);
-			return modelAndView;
+			return "welcome";
 		}
 		try {
-			User user = userService.findById(userId);
+			User user = userService.getById(userId);
 			if (user == null)
 				throw new UsernameNotFoundException(environment.getProperty("user.update.USERNOTFOUND"));
 			user.setName(userDTO.getName());
@@ -113,6 +113,6 @@ public class UserController {
 		} catch (Exception ex) {
 			model.addAttribute("error", ex.getMessage());
 		}
-		return modelAndView;
+		return "welcome";
 	}
 }

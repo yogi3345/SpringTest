@@ -1,11 +1,13 @@
 package com.infy.ekart.service;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
 import com.infy.ekart.entity.Address;
+import com.infy.ekart.entity.User;
 
 public interface AddressService {
 	
 	void Save(Address address);
-	Address findById(long id);
+	Address getById(long id);
+	List<Address> getAddressesByUser(long userId);
 }

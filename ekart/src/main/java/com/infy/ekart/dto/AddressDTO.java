@@ -72,5 +72,15 @@ public class AddressDTO {
 		address.setState(States.getStateFromString(this.state));
 		return address;
 	}
+
+	public static AddressDTO getDTO(Address entity) {
+		
+		AddressDTO addressDTO = new AddressDTO();
+		addressDTO.setAddressLine(entity.getAddressLine());
+		addressDTO.setPhoneNumber(entity.getPhoneNumber());
+		addressDTO.setPin(String.valueOf(entity.getPin()));
+		addressDTO.setState(States.getStringFromState(entity.getState()));		
+		return addressDTO;
+	}
 	
 }

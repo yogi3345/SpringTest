@@ -20,4 +20,8 @@ public class States {
 	public static State getStateFromString(String str) {
 		return State.valueOf(str.replace(" ", "_"));
 	}
+	
+	public static String getStringFromState(State state) {
+		return state.name().replace("_", " ");
+	}
 }

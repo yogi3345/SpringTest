@@ -13,16 +13,26 @@
 <body>
 
 	<div class="container">
+		
 		<h2>
 			<a href="/welcome">Back to Welcome Page</a>
+		</h2>
+		<h2>
+			<a href="/${sessionScope.userId}/address">View All Addresses</a>
 		</h2>
 		<h2>
 			<a href="/${sessionScope.userId}/address/add">Add Address</a>
 		</h2>
 		<h2>
-			<a href="/${sessionScope.userId}/address/update">Update Address</a>
+			<a href="/${sessionScope.userId}/address">Update Address</a>
 		</h2>
 		<p>${success}${error}</p>
+
+		<c:if test="${addressesSize>0 && states==null}"><jsp:include
+				page="Address/viewAllAddresses.jsp" /></c:if>
+		<c:if test="${addressesSize==0 && states==null}">
+					<h1>You haven't registered any address yet.</h1>
+				</c:if>
 		<c:if test="${states!=null}"><jsp:include
 				page="Address/addAddress.jsp" /></c:if>
 	</div>

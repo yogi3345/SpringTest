@@ -5,6 +5,7 @@ import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import com.infy.ekart.entity.Role;
 import com.infy.ekart.entity.User;
@@ -28,12 +29,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsername(String email) {
+    public User getByUsername(String email) {
         return userRepository.findByEmail(email);
     }
 
 	@Override
-	public User findById(long id) {
+	public User getById(long id) {
 		// TODO Auto-generated method stub
 		return userRepository.findById(id);
 	}

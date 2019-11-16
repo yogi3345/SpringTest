@@ -24,7 +24,7 @@ public class UserValidator implements Validator {
     public void validate(Object o, Errors errors) {
         UserDTO user = (UserDTO) o;
 
-        if (userService.findByUsername(user.getEmail()) != null) {
+        if (userService.getByUsername(user.getEmail()) != null) {
             errors.rejectValue("email", "Duplicate.userForm.email");
         }
 
