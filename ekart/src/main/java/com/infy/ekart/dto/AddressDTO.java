@@ -19,12 +19,10 @@ public class AddressDTO {
 	@NotNull(message="This field is mandatory")
 	private String addressLine;
 	
-	@NotEmpty(message="Please enter the Phone Number")
 	@NotNull(message="Phone number is mandatory")
 	@Pattern(regexp="[0-9]{10}", message="Please Enter a valid 10 digit Phone number")
 	private String phoneNumber;
 	
-	@NotEmpty(message="Please enter the Pin")
 	@NotNull(message="Pin is mandatory")
 	@Pattern(regexp="[0-9]{6}", message="Please enter a valid 6 digit Pin")
 	private String pin;
@@ -32,6 +30,10 @@ public class AddressDTO {
 	@NotEmpty(message="Please select the state")
 	@NotNull(message="State is mandatory")
 	private String state;
+	
+	@NotNull(message="City is mandatory")
+	@Pattern(regexp="[A-Za-z][A-Za-z\\s]{1,30}", message="Please enter a valid City")
+	private String city;
 
 	public String getAddressLine() {
 		return addressLine;
@@ -75,11 +77,20 @@ public class AddressDTO {
 		this.id = id;
 	}
 
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
 	public Address toEntity() {
 		// TODO Auto-generated method stub
 		Address address = new Address();
 		address.setAddressLine(this.addressLine);
 		address.setPhoneNumber(this.phoneNumber);
+		address.setCity(this.city);
 		address.setPin(Integer.parseInt(this.pin));
 		address.setState(States.getStateFromString(this.state));
 		return address;
@@ -92,6 +103,7 @@ public class AddressDTO {
 		addressDTO.setAddressLine(entity.getAddressLine());
 		addressDTO.setPhoneNumber(entity.getPhoneNumber());
 		addressDTO.setPin(String.valueOf(entity.getPin()));
+		addressDTO.setCity(entity.getCity());
 		addressDTO.setState(States.getStringFromState(entity.getState()));		
 		return addressDTO;
 	}

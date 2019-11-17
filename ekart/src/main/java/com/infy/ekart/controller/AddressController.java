@@ -42,8 +42,31 @@ public class AddressController {
 	@Autowired
 	Environment environment;
 
+	/*@GetMapping
+	public String viewAddress(@PathVariable long userId, ModelMap model) throws UserNotFoundException, AddressNotFoundException {
+		List<AddressDTO> addressDTOs = new ArrayList<AddressDTO>();
+		//try {
+			User user = userService.getById(userId);
+			if (user != null)
+				throw new UserNotFoundException(environment.getProperty("address.user.NOTFOUND"));
+			System.out.println("2222222222222222222");
+			List<Address> addressEntityList = addressService.getAddressesByUser(userId);
+			if (!addressEntityList.isEmpty())
+				addressDTOs = addressEntityList.stream().map(entity -> AddressDTO.getDTO(entity))
+						.collect(Collectors.toList());
+			if (addressDTOs.size() == 0)
+				throw new AddressNotFoundException(environment.getProperty("address.view.NOTFOUND"));
+			model.addAttribute("addresses", addressDTOs);
+		} catch (UsernameNotFoundException | AddressNotFoundException ex) {
+			model.addAttribute("error", ex.getMessage());
+		} catch (Exception ex) {
+			model.addAttribute("error", ex.getMessage());
+		}
+		return "address";
+	}*/
+	
 	@GetMapping
-	public String viewAddress(@PathVariable long userId, ModelMap model) {
+	public String viewAddress(@PathVariable long userId, ModelMap model) throws UserNotFoundException, AddressNotFoundException {
 		List<AddressDTO> addressDTOs = new ArrayList<AddressDTO>();
 		try {
 			User user = userService.getById(userId);
@@ -61,24 +84,26 @@ public class AddressController {
 		} catch (Exception ex) {
 			model.addAttribute("error", ex.getMessage());
 		}
-		return "address";
+		return "index";
 	}
 
 	@GetMapping("/add")
 	public String addAddressForm(@PathVariable long userId, ModelMap model) {
 		model.addAttribute("states", States.getAllStates());
-		model.addAttribute("addAddress", new AddressDTO());
-		return "address";
+		model.addAttribute("addAddress", true);
+		model.addAttribute("command", new AddressDTO());
+		return "index";
 	}
 
 	@PostMapping("/add")
 	public String addAddressSubmit(@PathVariable long userId,
-			@ModelAttribute("addAddress") @Valid AddressDTO addressDTO, BindingResult bindingResult, ModelMap model) {
-
+			@ModelAttribute("command") @Valid AddressDTO addressDTO, BindingResult bindingResult, ModelMap model) {
+		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("states", States.getAllStates());
-			model.addAttribute("addAddress", addressDTO);
-			return "address";
+			model.addAttribute("addAddress", true);
+			model.addAttribute("command", addressDTO);
+			return "index";
 		}
 
 		try {
@@ -94,7 +119,7 @@ public class AddressController {
 		} catch (Exception ex) {
 			model.addAttribute("error", ex.getMessage());
 		}
-		return "address";
+		return "index";
 	}
 
 	@GetMapping("/{addressId}/delete")
@@ -113,7 +138,7 @@ public class AddressController {
 		} catch (Exception ex) {
 			model.addAttribute("error", ex.getMessage());
 		}
-		return "address";
+		return "redirect:/"+userId+"/address";
 	}
 
 	@GetMapping("/{addressId}/modify")
@@ -129,23 +154,24 @@ public class AddressController {
 				throw new UserAndAddressMismatchException(environment.getProperty("address.user.MISMATCH"));
 			model.addAttribute("states", States.getAllStates());
 			model.addAttribute("modifyAddress", AddressDTO.getDTO(address));
+			model.addAttribute("command", new AddressDTO());
 		} catch (UsernameNotFoundException | AddressNotFoundException | UserAndAddressMismatchException ex) {
 			model.addAttribute("error", ex.getMessage());
 		} catch (Exception ex) {
 			model.addAttribute("error", ex.getMessage());
 		}
-		return "address";
+		return "index";
 	}
 
 	@PostMapping("/{addressId}/modify")
 	public String editAddressSubmit(@PathVariable long userId, @PathVariable long addressId,
-			@ModelAttribute("modifyAddress") @Valid AddressDTO addressDTO, BindingResult bindingResult,
+			@ModelAttribute("command") @Valid AddressDTO addressDTO, BindingResult bindingResult,
 			ModelMap model) {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("states", States.getAllStates());
 			model.addAttribute("modifyAddress", addressDTO);
-			return "address";
+			return "index";
 		}
 
 		try {
@@ -160,6 +186,7 @@ public class AddressController {
 			address.setAddressLine(addressDTO.getAddressLine());
 			address.setPhoneNumber(addressDTO.getPhoneNumber());
 			address.setPin(Integer.parseInt(addressDTO.getPin()));
+			address.setCity(addressDTO.getCity());
 			address.setState(States.getStateFromString(addressDTO.getState()));
 			addressService.Save(address);
 			model.addAttribute("success", environment.getProperty("address.modify.SUCCESS"));
@@ -168,6 +195,6 @@ public class AddressController {
 		} catch (Exception ex) {
 			model.addAttribute("error", ex.getMessage());
 		}
-		return "address";
+		return "redirect:/"+userId+"/address";
 	}
 }

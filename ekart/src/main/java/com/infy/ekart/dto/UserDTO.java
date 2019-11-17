@@ -8,45 +8,44 @@ import com.infy.ekart.entity.User;
 
 public class UserDTO {
 
-	@NotEmpty(message="Please enter the name")
-	@NotNull(message="Name is mandatory")
-    private String name;
-	
-	@NotEmpty(message="Please enter the password")
-	@NotNull(message="Password is mandatory")
-    private String password;
-	
-    private String passwordConfirm;
-    
-	@NotEmpty(message="Please enter the Email Id")
-	@NotNull(message="Email Id is mandatory")
-	@Pattern(regexp = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}", message="Please enter valid Email Id")
-    private String email;
+	@NotNull(message = "Name is mandatory")
+	@Pattern(regexp="[A-Za-z][A-Za-z\\s]+", message="Only Alphabets along with spaces are allowed")
+	private String name;
 
-    public String getName() {
-        return name;
-    }
+	@NotNull(message = "Password is mandatory")
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{4,}$", message = "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character")
+	private String password;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	private String passwordConfirm;
 
-    public String getPassword() {
-        return password;
-    }
+	@NotNull(message = "Email Id is mandatory")
+	@Pattern(regexp = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}", message = "Please enter valid Email Id")
+	private String email;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-    
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -69,6 +68,5 @@ public class UserDTO {
 		return "UserDTO [name=" + name + ", password=" + password + ", passwordConfirm=" + passwordConfirm + ", email="
 				+ email + "]";
 	}
-	
-	
+
 }

@@ -15,15 +15,22 @@
 
 	<div class="container">
 
-		<form:form method="POST" action="/${sessionScope.userId}/address/add" modelAttribute="addAddress"
+		<form:form method="POST" action="/${sessionScope.userId}/address/add" modelAttribute="command"
 			class="form-signin">
 			<h3 class="form-signin-heading">Add an Address</h3>
 
 			<spring:bind path="addressLine">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
-					<form:textarea type="text" path="addressLine" class="form-control"
-						placeholder="Address" autofocus="true"></form:textarea>
+					<form:input type="text" path="addressLine" class="form-control"
+						placeholder="Address" autofocus="true"></form:input>
 					<form:errors path="addressLine"></form:errors>
+				</div>
+			</spring:bind>
+			<spring:bind path="city">
+				<div class="form-group ${status.error ? 'has-error' : ''}">
+					<form:input type="text" path="city" class="form-control"
+						placeholder="City" autofocus="true"></form:input>
+					<form:errors path="city"></form:errors>
 				</div>
 			</spring:bind>
 			<spring:bind path="state">

@@ -15,18 +15,24 @@
 
 	<div class="container">
 
-		<form:form method="POST" action="/${sessionScope.userId}/address/${modifyAddress.id}/modify" modelAttribute="modifyAddress"
+		<form:form method="POST" modelAttribute="command" action="/${sessionScope.userId}/address/${modifyAddress.id}/modify" 
 			class="form-signin">
 			<h3 class="form-signin-heading">Edit the Address</h3>
 
 			<spring:bind path="addressLine">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
-					<form:textarea type="text" path="addressLine" class="form-control"
-						value="${modifyAddress.addressLine}" autofocus="true"></form:textarea>
+					<form:input type="text" path="addressLine" class="form-control"
+						value="${modifyAddress.addressLine}" autofocus="true"></form:input>
 					<form:errors path="addressLine"></form:errors>
 				</div>
 			</spring:bind>
-			${address.id}
+			<spring:bind path="city">
+				<div class="form-group ${status.error ? 'has-error' : ''}">
+					<form:input type="text" path="city" class="form-control"
+						value="${modifyAddress.city}" autofocus="true"></form:input>
+					<form:errors path="city"></form:errors>
+				</div>
+			</spring:bind>
 			<spring:bind path="state">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
 					<form:select path="state" class="form-control"

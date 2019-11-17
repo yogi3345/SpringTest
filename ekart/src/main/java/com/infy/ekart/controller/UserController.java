@@ -40,14 +40,17 @@ public class UserController {
 	public String registration(ModelMap model) {
 
 		model.addAttribute("command", new UserDTO());
-		return "registration";
+		model.addAttribute("showRegister", true);
+		return "index";
 	}
 
 	@PostMapping("/registration")
-	public String registration(@ModelAttribute("command") @Valid UserDTO userForm, BindingResult bindingResult) {
+	public String registration(@ModelAttribute("command") @Valid UserDTO userForm, BindingResult bindingResult,
+			ModelMap model) {
 		userValidator.validate(userForm, bindingResult);
 		if (bindingResult.hasErrors()) {
-			return "registration";
+			model.addAttribute("showRegister", true);
+			return "index";
 		}
 		User user = userForm.toEntity();
 
@@ -55,7 +58,7 @@ public class UserController {
 
 		securityService.autoLogin(user.getEmail(), userForm.getPasswordConfirm());
 
-		return "redirect:/welcome";
+		return "redirect:/home";
 	}
 
 	@GetMapping("/login")
@@ -66,7 +69,8 @@ public class UserController {
 		if (logout != null)
 			model.addAttribute("message", environment.getProperty("user.logout.SUCCEESS"));
 
-		return "login";
+		model.addAttribute("showLogin", true);
+		return "index";
 	}
 
 	@GetMapping("/{userId}/update")
@@ -84,7 +88,7 @@ public class UserController {
 		} catch (Exception ex) {
 			model.addAttribute("error", ex.getMessage());
 		}
-		return "welcome";
+		return "index";
 	}
 
 	@PostMapping("/{userId}/update")
@@ -94,7 +98,7 @@ public class UserController {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("user", userDTO);
 			model.addAttribute("command", userDTO);
-			return "welcome";
+			return "index";
 		}
 		try {
 			User user = userService.getById(userId);
@@ -110,6 +114,6 @@ public class UserController {
 		} catch (Exception ex) {
 			model.addAttribute("error", ex.getMessage());
 		}
-		return "welcome";
+		return "index";
 	}
 }
