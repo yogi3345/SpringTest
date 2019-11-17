@@ -24,7 +24,7 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public Address getById(long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return addressRepository.findById(id);
 	}
 
 	@Override
@@ -32,6 +32,12 @@ public class AddressServiceImpl implements AddressService {
 		// TODO Auto-generated method stub
 		List<Address> addressEntityList = addressRepository.findByUserId(userId);
 		return addressEntityList;
+	}
+
+	@Override
+	public void deleteAddress(long id) {
+		// TODO Auto-generated method stub
+		addressRepository.deleteById(id);
 	}
 
 }

@@ -10,16 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.infy.ekart.dto.UserDTO;
 import com.infy.ekart.entity.User;
+import com.infy.ekart.exception.UserNotFoundException;
 import com.infy.ekart.service.SecurityService;
 import com.infy.ekart.service.UserService;
 import com.infy.ekart.utilities.UserValidator;
@@ -40,7 +38,7 @@ public class UserController {
 
 	@GetMapping("/registration")
 	public String registration(ModelMap model) {
-		
+
 		model.addAttribute("command", new UserDTO());
 		return "registration";
 	}
@@ -73,11 +71,11 @@ public class UserController {
 
 	@GetMapping("/{userId}/update")
 	public String modifyAccountDetails(@PathVariable long userId, ModelMap model, HttpSession httpSession) {
-		
+
 		try {
 			User user = userService.getById(userId);
 			if (user == null)
-				throw new UsernameNotFoundException(environment.getProperty("user.update.USERNOTFOUND"));
+				throw new UserNotFoundException(environment.getProperty("user.update.USERNOTFOUND"));
 			UserDTO userDTO = user.toDTO();
 			model.addAttribute("user", userDTO);
 			model.addAttribute("command", new UserDTO());
@@ -90,10 +88,9 @@ public class UserController {
 	}
 
 	@PostMapping("/{userId}/update")
-	public String modifyAccountDetails(@PathVariable long userId,
-			@Valid @ModelAttribute("command") UserDTO userDTO, BindingResult bindingResult, ModelMap model,
-			HttpSession httpSession) {
-		
+	public String modifyAccountDetails(@PathVariable long userId, @Valid @ModelAttribute("command") UserDTO userDTO,
+			BindingResult bindingResult, ModelMap model, HttpSession httpSession) {
+
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("user", userDTO);
 			model.addAttribute("command", userDTO);
@@ -102,7 +99,7 @@ public class UserController {
 		try {
 			User user = userService.getById(userId);
 			if (user == null)
-				throw new UsernameNotFoundException(environment.getProperty("user.update.USERNOTFOUND"));
+				throw new UserNotFoundException(environment.getProperty("user.update.USERNOTFOUND"));
 			user.setName(userDTO.getName());
 			user.setPassword(userDTO.getPassword());
 			userService.save(user);

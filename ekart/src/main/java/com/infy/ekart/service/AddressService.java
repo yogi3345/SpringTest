@@ -10,4 +10,5 @@ public interface AddressService {
 	void Save(Address address);
 	Address getById(long id);
 	List<Address> getAddressesByUser(long userId);
+	void deleteAddress(long id);
 }

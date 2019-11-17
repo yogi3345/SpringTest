@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.infy.ekart.dto.AddressDTO;
 import com.infy.ekart.entity.Address;
 import com.infy.ekart.entity.User;
+import com.infy.ekart.exception.AddressNotFoundException;
+import com.infy.ekart.exception.UserAndAddressMismatchException;
+import com.infy.ekart.exception.UserNotFoundException;
 import com.infy.ekart.service.AddressService;
 import com.infy.ekart.service.UserService;
 import com.infy.ekart.utilities.States;
@@ -45,18 +48,19 @@ public class AddressController {
 		try {
 			User user = userService.getById(userId);
 			if (user == null)
-				throw new UsernameNotFoundException(environment.getProperty("address.user.NOTFOUND"));
+				throw new UserNotFoundException(environment.getProperty("address.user.NOTFOUND"));
 			List<Address> addressEntityList = addressService.getAddressesByUser(userId);
 			if (!addressEntityList.isEmpty())
 				addressDTOs = addressEntityList.stream().map(entity -> AddressDTO.getDTO(entity))
 						.collect(Collectors.toList());
-		} catch (UsernameNotFoundException ex) {
+			if (addressDTOs.size() == 0)
+				throw new AddressNotFoundException(environment.getProperty("address.view.NOTFOUND"));
+			model.addAttribute("addresses", addressDTOs);
+		} catch (UsernameNotFoundException | AddressNotFoundException ex) {
 			model.addAttribute("error", ex.getMessage());
 		} catch (Exception ex) {
 			model.addAttribute("error", ex.getMessage());
 		}
-		model.addAttribute("addressesSize", addressDTOs.size());
-		model.addAttribute("addresses", addressDTOs);
 		return "address";
 	}
 
@@ -80,7 +84,7 @@ public class AddressController {
 		try {
 			User user = userService.getById(userId);
 			if (user == null)
-				throw new UsernameNotFoundException(environment.getProperty("address.user.NOTFOUND"));
+				throw new UserNotFoundException(environment.getProperty("address.user.NOTFOUND"));
 			Address address = addressDTO.toEntity();
 			address.setUser(user);
 			addressService.Save(address);
@@ -93,9 +97,77 @@ public class AddressController {
 		return "address";
 	}
 
-	@DeleteMapping("/{addressId}/delete")
+	@GetMapping("/{addressId}/delete")
 	public String deleteAddress(@PathVariable long userId, @PathVariable long addressId, ModelMap model) {
-		return "redirect:/"+userId+"/address";
+		try {
+			User user = userService.getById(userId);
+			if (user == null)
+				throw new UserNotFoundException(environment.getProperty("address.user.NOTFOUND"));
+			Address address = addressService.getById(addressId);
+			if (address == null)
+				throw new AddressNotFoundException(environment.getProperty("address.modify.NOTFOUND"));
+			addressService.deleteAddress(address.getId());
+			model.addAttribute("success", environment.getProperty("address.delete.SUCCESS"));
+		} catch (UsernameNotFoundException | AddressNotFoundException ex) {
+			model.addAttribute("error", ex.getMessage());
+		} catch (Exception ex) {
+			model.addAttribute("error", ex.getMessage());
+		}
+		return "address";
 	}
 
+	@GetMapping("/{addressId}/modify")
+	public String modifyAddressForm(@PathVariable long userId, @PathVariable long addressId, ModelMap model) {
+		try {
+			User user = userService.getById(userId);
+			if (user == null)
+				throw new UserNotFoundException(environment.getProperty("address.user.NOTFOUND"));
+			Address address = addressService.getById(addressId);
+			if (address == null)
+				throw new AddressNotFoundException(environment.getProperty("address.modify.NOTFOUND"));
+			if (!user.equals(address.getUser()))
+				throw new UserAndAddressMismatchException(environment.getProperty("address.user.MISMATCH"));
+			model.addAttribute("states", States.getAllStates());
+			model.addAttribute("modifyAddress", AddressDTO.getDTO(address));
+		} catch (UsernameNotFoundException | AddressNotFoundException | UserAndAddressMismatchException ex) {
+			model.addAttribute("error", ex.getMessage());
+		} catch (Exception ex) {
+			model.addAttribute("error", ex.getMessage());
+		}
+		return "address";
+	}
+
+	@PostMapping("/{addressId}/modify")
+	public String editAddressSubmit(@PathVariable long userId, @PathVariable long addressId,
+			@ModelAttribute("modifyAddress") @Valid AddressDTO addressDTO, BindingResult bindingResult,
+			ModelMap model) {
+
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("states", States.getAllStates());
+			model.addAttribute("modifyAddress", addressDTO);
+			return "address";
+		}
+
+		try {
+			User user = userService.getById(userId);
+			if (user == null)
+				throw new UserNotFoundException(environment.getProperty("address.user.NOTFOUND"));
+			Address address = addressService.getById(addressId);
+			if (address == null)
+				throw new AddressNotFoundException(environment.getProperty("address.modify.NOTFOUND"));
+			if (!user.equals(address.getUser()))
+				throw new UserAndAddressMismatchException(environment.getProperty("address.user.MISMATCH"));
+			address.setAddressLine(addressDTO.getAddressLine());
+			address.setPhoneNumber(addressDTO.getPhoneNumber());
+			address.setPin(Integer.parseInt(addressDTO.getPin()));
+			address.setState(States.getStateFromString(addressDTO.getState()));
+			addressService.Save(address);
+			model.addAttribute("success", environment.getProperty("address.modify.SUCCESS"));
+		} catch (UsernameNotFoundException | AddressNotFoundException | UserAndAddressMismatchException ex) {
+			model.addAttribute("error", ex.getMessage());
+		} catch (Exception ex) {
+			model.addAttribute("error", ex.getMessage());
+		}
+		return "address";
+	}
 }

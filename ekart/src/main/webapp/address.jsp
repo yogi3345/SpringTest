@@ -23,18 +23,16 @@
 		<h2>
 			<a href="/${sessionScope.userId}/address/add">Add Address</a>
 		</h2>
-		<h2>
-			<a href="/${sessionScope.userId}/address">Update Address</a>
-		</h2>
 		<p>${success}${error}</p>
+		
+		<p><br></p><p><br></p>
 
-		<c:if test="${addressesSize>0 && states==null}"><jsp:include
+		<c:if test="${addAddress==null && modifyAddress==null}"><jsp:include
 				page="Address/viewAllAddresses.jsp" /></c:if>
-		<c:if test="${addressesSize==0 && states==null}">
-					<h1>You haven't registered any address yet.</h1>
-				</c:if>
-		<c:if test="${states!=null}"><jsp:include
+		<c:if test="${addAddress!=null}"><jsp:include
 				page="Address/addAddress.jsp" /></c:if>
+		<c:if test="${modifyAddress!=null}"><jsp:include
+				page="Address/modifyAddress.jsp" /></c:if>
 	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

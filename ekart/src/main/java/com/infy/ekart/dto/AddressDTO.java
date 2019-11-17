@@ -13,6 +13,8 @@ import com.infy.ekart.utilities.States;
 
 public class AddressDTO {
 	
+	private long id;
+	
 	@NotEmpty(message="Please enter the address details")
 	@NotNull(message="This field is mandatory")
 	private String addressLine;
@@ -62,6 +64,16 @@ public class AddressDTO {
 	public void setState(String state) {
 		this.state = state;
 	}
+	
+	
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public Address toEntity() {
 		// TODO Auto-generated method stub
@@ -76,6 +88,7 @@ public class AddressDTO {
 	public static AddressDTO getDTO(Address entity) {
 		
 		AddressDTO addressDTO = new AddressDTO();
+		addressDTO.setId(entity.getId());
 		addressDTO.setAddressLine(entity.getAddressLine());
 		addressDTO.setPhoneNumber(entity.getPhoneNumber());
 		addressDTO.setPin(String.valueOf(entity.getPin()));
