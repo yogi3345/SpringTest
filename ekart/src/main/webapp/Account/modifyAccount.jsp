@@ -16,7 +16,7 @@
 	<div class="container">
 
 		<form:form method="POST" modelAttribute="command" class="form-signin">
-			<h3 class="form-signin-heading">Modify your Ekart Account</h3>
+			<h3 class="form-signin-heading text-center">Modify Account</h3><br>
 			<spring:bind path="name">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
 					<form:input type="text" path="name" class="form-control"

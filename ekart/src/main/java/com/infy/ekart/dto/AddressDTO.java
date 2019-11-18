@@ -15,8 +15,8 @@ public class AddressDTO {
 	
 	private long id;
 	
-	@NotEmpty(message="Please enter the address details")
 	@NotNull(message="This field is mandatory")
+	@Pattern(regexp="[^\\s].{1,30}", message="Please enter a valid Address")
 	private String addressLine;
 	
 	@NotNull(message="Phone number is mandatory")

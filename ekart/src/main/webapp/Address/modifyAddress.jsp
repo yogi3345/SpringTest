@@ -17,7 +17,7 @@
 
 		<form:form method="POST" modelAttribute="command" action="/${sessionScope.userId}/address/${modifyAddress.id}/modify" 
 			class="form-signin">
-			<h3 class="form-signin-heading">Edit the Address</h3>
+			<h3 class="form-signin-heading text-center">Edit Address</h3><br>
 
 			<spring:bind path="addressLine">
 				<div class="form-group ${status.error ? 'has-error' : ''}">
