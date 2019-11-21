@@ -43,7 +43,7 @@
 <body>
 
 	<jsp:include page="header.jsp" />
-	<c:if test="${home!=null || success!=null || error!=null}">
+	<c:if test="${home!=null || success!=null || errors!=null}">
 		<div class="container">
 		
 		<c:if test="${home!=null}">
