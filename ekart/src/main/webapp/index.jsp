@@ -50,7 +50,7 @@
 			<h3 class="text-center"><code>You are Logged in with User ID - ${sessionScope.userId}</code></h3>
 		</c:if>
 		
-			<p>${success}${error}</p>
+			<p>${success}${errors}</p>
 		</div>
 	</c:if>
 	<c:if test="${showLogin!=null}"><jsp:include page="login.jsp" /></c:if>

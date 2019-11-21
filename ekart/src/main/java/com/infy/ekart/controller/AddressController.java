@@ -80,9 +80,9 @@ public class AddressController {
 				throw new AddressNotFoundException(environment.getProperty("address.view.NOTFOUND"));
 			model.addAttribute("addresses", addressDTOs);
 		} catch (UsernameNotFoundException | AddressNotFoundException ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		} catch (Exception ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		}
 		return "index";
 	}
@@ -115,9 +115,9 @@ public class AddressController {
 			addressService.Save(address);
 			model.addAttribute("success", environment.getProperty("address.add.SUCCESS"));
 		} catch (UsernameNotFoundException ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		} catch (Exception ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		}
 		return "index";
 	}
@@ -134,9 +134,9 @@ public class AddressController {
 			addressService.deleteAddress(address.getId());
 			model.addAttribute("success", environment.getProperty("address.delete.SUCCESS"));
 		} catch (UsernameNotFoundException | AddressNotFoundException ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		} catch (Exception ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		}
 		return "redirect:/"+userId+"/address";
 	}
@@ -156,9 +156,9 @@ public class AddressController {
 			model.addAttribute("modifyAddress", AddressDTO.getDTO(address));
 			model.addAttribute("command", new AddressDTO());
 		} catch (UsernameNotFoundException | AddressNotFoundException | UserAndAddressMismatchException ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		} catch (Exception ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		}
 		return "index";
 	}
@@ -191,9 +191,9 @@ public class AddressController {
 			addressService.Save(address);
 			model.addAttribute("success", environment.getProperty("address.modify.SUCCESS"));
 		} catch (UsernameNotFoundException | AddressNotFoundException | UserAndAddressMismatchException ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		} catch (Exception ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		}
 		return "redirect:/"+userId+"/address";
 	}

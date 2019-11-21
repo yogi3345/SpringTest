@@ -84,9 +84,9 @@ public class UserController {
 			model.addAttribute("user", userDTO);
 			model.addAttribute("command", new UserDTO());
 		} catch (UsernameNotFoundException ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		} catch (Exception ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		}
 		return "index";
 	}
@@ -110,9 +110,9 @@ public class UserController {
 			httpSession.setAttribute("userName", user.getName());
 			model.addAttribute("success", environment.getProperty("user.update.SUCCESS"));
 		} catch (UsernameNotFoundException ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		} catch (Exception ex) {
-			model.addAttribute("error", ex.getMessage());
+			model.addAttribute("errors", ex.getMessage());
 		}
 		return "index";
 	}
