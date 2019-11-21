@@ -32,6 +32,9 @@ public class UserController {
 
 	@Autowired
 	private UserValidator userValidator;
+	
+	@Autowired
+    HttpSession httpSession;
 
 	@Autowired
 	Environment environment;
@@ -63,8 +66,11 @@ public class UserController {
 
 	@GetMapping("/login")
 	public String login(Model model, String error, String logout) {
-		if (error != null)
+		if (error != null) {
 			model.addAttribute("error", environment.getProperty("user.login.ERROR"));
+			httpSession.setAttribute("userName", null);
+	        httpSession.setAttribute("userId", null);
+		}
 
 		if (logout != null)
 			model.addAttribute("message", environment.getProperty("user.logout.SUCCEESS"));
